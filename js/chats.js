@@ -17,6 +17,7 @@ sendBtn.onclick = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 inputField.value = ""; //Blank the input field after the message delivered.
+                scrollToBottom();
             }
         }
     }
@@ -24,6 +25,14 @@ sendBtn.onclick = () => {
     // Send the form data
     let formData = new FormData(form);
     xhr.send(formData); // Sending the formData
+}
+
+chatBox.onmouseenter = () => {
+    chatBox.classList.add("active");
+}
+
+chatBox.onmouseleave = () => {
+    chatBox.classList.remove("active");
 }
 
 setInterval(() => {
@@ -36,6 +45,9 @@ setInterval(() => {
             if (xhr.status === 200) {
                 let data = xhr.response;
                 chatBox.innerHTML = data;
+                if (!chatBox.classList.contains("active")) {
+                    scrollToBottom();
+                }
             }
         }
     }
@@ -45,3 +57,7 @@ setInterval(() => {
     xhr.send(formData); // Sending the formData
 
 }, 500); // This function will run frequently after .5s 
+
+function scrollToBottom() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
